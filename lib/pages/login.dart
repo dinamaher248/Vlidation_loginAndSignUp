@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sign_up_login/functions/validate_login.dart';
 import 'package:sign_up_login/widgets/Button.dart';
 import 'package:sign_up_login/widgets/SignUp.dart';
 import 'package:sign_up_login/widgets/Social_login.dart';
@@ -14,6 +15,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
@@ -45,11 +48,38 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 30,
                 ),
-                Textfield_Widget(text: 'Enter Your Email'),
+                Textfield_Widget(
+                  text: 'Enter Your Email',
+                  obscureText: false,
+                  controller: emailController,
+                  validator: (value) {
+                    return FormValidator.validateEmail(emailController.text);
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      emailController.text = value;
+                      debugPrint("Value is Changed: $value");
+                    });
+                  },
+                  
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                Textfield_Widget(text: 'Enter Your Password'),
+                Textfield_Widget(
+                  text: 'Enter Your Password',
+                  obscureText: true,
+                  controller: passwordController,
+                  validator: (value) {
+                    return FormValidator.validatePass(passwordController.text);
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      passwordController.text = value;
+                      debugPrint("Value is Changed: $value");
+                    });
+                  },
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -58,7 +88,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                   // Navigator.pushNamed(context, '');
+                        // Navigator.pushNamed(context, '');
                       } else {
                         setState(() {
                           autovalidateMode = AutovalidateMode.always;

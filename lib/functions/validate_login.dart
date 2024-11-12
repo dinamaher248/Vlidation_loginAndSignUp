@@ -1,4 +1,7 @@
 class FormValidator {
+  //  final email = _emailController.text;
+  //   final password = _passwordController.text;
+
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return "You must enter your email";

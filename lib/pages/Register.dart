@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sign_up_login/functions/validate_login.dart';
 import 'package:sign_up_login/widgets/Button.dart';
 import 'package:sign_up_login/widgets/SignUp.dart';
 import 'package:sign_up_login/widgets/Social_login.dart';
@@ -14,7 +15,11 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final formKey = GlobalKey<FormState>();
-
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   @override
@@ -45,19 +50,66 @@ class _RegisterState extends State<Register> {
                 const SizedBox(
                   height: 30,
                 ),
-                Textfield_Widget(text: 'Username'),
+                Textfield_Widget(
+                  text: 'Username',
+                  obscureText: false,
+                  controller: usernameController,
+                  validator: (value) {
+                    return FormValidator.validateUserName(usernameController.text);
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                  usernameController.text = value;
+                });
+                  },
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                Textfield_Widget(text: 'Email'),
+                Textfield_Widget(
+                  text: 'Email',
+                  obscureText: false,
+                  controller: emailController,
+                  validator: (value) {
+                    return FormValidator.validateEmail(emailController.text);
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                  emailController.text = value;
+                });
+                  },
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                Textfield_Widget(text: 'Password'),
+                Textfield_Widget(
+                  text: 'Password',
+                  obscureText: true,
+                  controller: passwordController,
+                  validator: (value) {
+                    return FormValidator.validatePass(passwordController.text);
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                  passwordController.text = value;
+                });
+                  },
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                Textfield_Widget(text: 'Confirm Password'),
+                Textfield_Widget(text: 'Confirm Password',
+                obscureText: true,
+                controller: confirmPasswordController,
+                validator: (value) {
+                  return FormValidator.checkConfirming(passwordController.text, confirmPasswordController.text);
+                },
+                onChanged: (value) {
+                  setState(() {
+                  confirmPasswordController.text = value;
+                });
+                },
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -66,7 +118,7 @@ class _RegisterState extends State<Register> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                      // Navigator.pushNamed(context, '');
+                        // Navigator.pushNamed(context, '');
                       } else {
                         setState(() {
                           autovalidateMode = AutovalidateMode.always;
